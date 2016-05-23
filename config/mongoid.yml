@@ -22,10 +22,10 @@ development:
         #   mode: :secondary_preferred
 
         # The name of the user for authentication.
-        user: 'root'
+        # user: 'user'
 
         # The password of the user for authentication.
-        password: 'root'
+        # password: 'password'
 
         # The user's database roles.
         # roles:
@@ -133,22 +133,10 @@ test:
         read:
           mode: primary
         max_pool_size: 1
-        user: 'root'
-        password: 'root'
-
 
 production:
-  # Configure available database clients. (required)
   clients:
-    # Defines the default client. (required)
     default:
-      # Defines the name of the default database that Mongoid can connect to.
-      # (required).
-      database: userms_production
-      # Provides the hosts the default client can connect to. Must be an array
-      # of host:port pairs. (required)
-      hosts:
-        - localhost:27017
-    options:
-      user: 'root'
-      password: 'root'
+      uri: "mongodb://heroku_rqbn74mq:gsprhlqvdk6eoschvdkfvblkr2@ds011893.mlab.com:11893/heroku_rqbn74mq"
+      options:
+        consistency: :strong
