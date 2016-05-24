@@ -15,11 +15,19 @@ gem 'kaminari'
 
 # Use rspec for testing.
 gem 'rspec-rails'
+gem 'factory_girl'
 
 # Use 'mongoid' and 'bson_ext' for Mongodb.
 gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'bson_ext'
 gem 'mongoid-slug'
+
+gem 'devise'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
+gem 'omniauth-google-oauth2'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

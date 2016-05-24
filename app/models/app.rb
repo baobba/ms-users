@@ -17,6 +17,12 @@ class App
 
   validates_uniqueness_of :name, :token
 
+  public
+    # will be included when listing apps or showing an specific app.
+    def self.public_attrs
+      [:name, :domain, :token, :callback]
+    end
+
 
   protected
   	def gen_token

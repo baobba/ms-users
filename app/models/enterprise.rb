@@ -2,6 +2,7 @@ class Enterprise
   include Mongoid::Document
   include Mongoid::Slug
   field :name, type: String
+  field :domain, type: String
   field :home_url, type: String
   field :facebook_key, type: String
   field :google_key, type: String
@@ -14,4 +15,10 @@ class Enterprise
   has_many :apps
 
   validates_uniqueness_of :name
+
+  public
+    # will be included when listing enterprises or showing an specific enterprise.
+    def self.public_attrs
+      [:id, :name, :domain, :home_url, :_slugs]
+    end
 end
