@@ -8,12 +8,21 @@ class App
 
   slug :name
 
-	before_create :gen_token
+  belongs_to :enterprise
+  validates :enterprise, presence: true
+  accepts_nested_attributes_for :enterprise
+
+  before_create :gen_token
+  before_validation :set_enterprise
 
   validates_uniqueness_of :name, :token
 
+
   protected
   	def gen_token
-  		self.token = SecureRandom.urlsafe_base64 << SecureRandom.uuid
+      self.token = SecureRandom.urlsafe_base64 << SecureRandom.uuid
   	end
+    def set_enterprise
+      self.enterprise = Enterprise.find(self.enterprise_id)
+    end
 end

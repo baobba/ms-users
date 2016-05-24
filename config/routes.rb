@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :apps, except: [:new, :edit], defaults: {format: :json}
+      resources :enterprises, except: [:new, :edit], defaults: {format: :json}
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,7 +1,9 @@
 json.apps @apps do |app|
-  json.id             app.id
-  json.name						app.name
-  json.token					app.token
-  json.domain					app.domain
-  json.callback				app.callback
+  json.(app, *app.attributes.keys)
+  json.enterprise do
+  	json.id						app.enterprise.id
+  	json.name 				app.enterprise.name
+  	json.home_url			app.enterprise.home_url
+  	json._slugs				app.enterprise._slugs
+  end
 end
