@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       devise_for :users
+      get '/users/auth/:provider/setup', to: 'users#setup'
       #match '/users/auth/failure', to: redirect('/'), via: [:get, :post]
       resources :apps, except: [:new, :edit], defaults: {format: :json}
       resources :enterprises, except: [:new, :edit], defaults: {format: :json}

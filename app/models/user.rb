@@ -44,10 +44,11 @@ class User
   belongs_to :app
   accepts_nested_attributes_for :app
   validates :app, presence: true
+  before_validation :set_app
 
   has_many :identities
 
-  def self.find_for_oauth(auth, signed_in_resource = nil)
+  def self.find_for_oauth(auth, params, signed_in_resource = nil)
     # Get the identity and user if they exist
     identity = Identity.find_for_oauth(auth)
 
@@ -69,7 +70,8 @@ class User
       if user.nil?
         user = User.new(
           email: email ? email : "user-#{auth.uid}@#{auth.provider}.com",
-          password: Devise.friendly_token[0,20]
+          password: Devise.friendly_token[0,20],
+          app_id: params["id"]
         )
         user.skip_confirmation!
         user.save!
