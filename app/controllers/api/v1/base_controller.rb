@@ -70,7 +70,9 @@ class Api::V1::BaseController < ApplicationController
   end
 
   protected
-
+    def restrict_logged_client
+      head :unauthorized unless current_client
+    end
     def restrict_access
       api_token = ApiToken.where(token: params[:token]).exists?
       head :unauthorized unless api_token

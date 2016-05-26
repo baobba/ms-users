@@ -1,4 +1,5 @@
 require 'rails_helper'
+include Devise::TestHelpers
 
 RSpec.describe Api::V1::AppsController, type: :controller do
 
@@ -15,13 +16,23 @@ RSpec.describe Api::V1::AppsController, type: :controller do
   end
 
   describe "POST #create" do
-    it "returns http created" do
+    it "returns http created for logged client" do
+      client_sign_in
       enterprise = FactoryGirl.create(:enterprise)
       app_attrs = FactoryGirl.attributes_for(:app)
       app_attrs[:enterprise_id] = enterprise.slug
 
       post :create, app: app_attrs, format: :json
       expect(response).to have_http_status(:created)
+    end
+    it "returns http unauthorized for guest client" do
+      client_sign_in nil
+      enterprise = FactoryGirl.create(:enterprise)
+      app_attrs = FactoryGirl.attributes_for(:app)
+      app_attrs[:enterprise_id] = enterprise.slug
+
+      post :create, app: app_attrs, format: :json
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
