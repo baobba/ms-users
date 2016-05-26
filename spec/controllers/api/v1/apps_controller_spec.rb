@@ -1,5 +1,4 @@
 require 'rails_helper'
-include Devise::TestHelpers
 
 RSpec.describe Api::V1::AppsController, type: :controller do
 

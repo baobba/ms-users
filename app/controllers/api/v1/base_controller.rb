@@ -73,6 +73,15 @@ class Api::V1::BaseController < ApplicationController
     def restrict_logged_client
       head :unauthorized unless current_client
     end
+    def restrict_logged_client_self
+      if current_client == nil || get_resource.try(:get_client_id) == nil || get_resource.try(:get_client_id) != current_client.id
+        head :unauthorized unless current_client.try(:role) == "admin"
+      end  
+    end
+    def restrict_logged_client_admin
+      head :unauthorized unless current_client.try(:role) == "admin"
+    end
+
     def restrict_access
       api_token = ApiToken.where(token: params[:token]).exists?
       head :unauthorized unless api_token
