@@ -8,11 +8,13 @@ class App
   slug :name
 
   belongs_to :enterprise
-  validates :enterprise, presence: true
+  validates :enterprise_id, presence: true
   accepts_nested_attributes_for :enterprise
 
   has_one :api_token
   validates :api_token, presence: true
+
+  has_many :users
 
   validates_uniqueness_of :name
 
@@ -25,14 +27,15 @@ class App
     end
 
 
-  protected
-    def set_enterprise
+  def set_enterprise
+    if enterprise_id != nil && enterprise == nil
       self.enterprise = Enterprise.find(self.enterprise_id)
     end
-    def set_api_token
-      self.api_token = ApiToken.create({app_id: self.id}) if self.api_token == nil
-    end
-    def get_app_id
-      self.id
-    end
+  end
+  def set_api_token
+    self.api_token = ApiToken.create({app_id: self.id}) if self.api_token == nil
+  end
+  def get_app_id
+    self.id
+  end
 end

@@ -14,10 +14,6 @@ gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'enumerize'
 
-# Use rspec for testing.
-gem 'rspec-rails'
-gem 'factory_girl'
-
 # Use 'mongoid' and 'bson_ext' for Mongodb.
 gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'bson_ext'
@@ -41,6 +37,9 @@ gem 'omniauth-google-oauth2'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+	# Use rspec for testing.
+	gem 'rspec-rails'
+	gem 'factory_girl_rails'
 end
 
 group :development do
