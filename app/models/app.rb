@@ -3,7 +3,6 @@ class App
   include Mongoid::Slug
   field :name, type: String
   field :domain, type: String
-  field :token, type: String
   field :callback, type: String
 
   slug :name
@@ -12,23 +11,28 @@ class App
   validates :enterprise, presence: true
   accepts_nested_attributes_for :enterprise
 
-  before_create :gen_token
-  before_validation :set_enterprise
+  has_one :api_token
+  validates :api_token, presence: true
 
-  validates_uniqueness_of :name, :token
+  validates_uniqueness_of :name
+
+  before_validation :set_enterprise, :set_api_token
 
   public
     # will be included when listing apps or showing an specific app.
     def self.public_attrs
-      [:name, :domain, :token, :callback]
+      [:name, :domain, :api_token, :callback]
     end
 
 
   protected
-  	def gen_token
-      self.token = SecureRandom.urlsafe_base64 << SecureRandom.uuid
-  	end
     def set_enterprise
       self.enterprise = Enterprise.find(self.enterprise_id)
+    end
+    def set_api_token
+      self.api_token = ApiToken.create({app_id: self.id}) if self.api_token == nil
+    end
+    def get_app_id
+      self.id
     end
 end

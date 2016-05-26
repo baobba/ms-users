@@ -1,13 +1,16 @@
 class User
   include Mongoid::Document
+  include Mongoid::Slug
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :confirmable
   devise :omniauthable, omniauth_providers: [:facebook]
 
   ## Database authenticatable
   field :email,              type: String, default: ""
+  slug :email
   field :encrypted_password, type: String, default: ""
 
   ## Recoverable
@@ -25,15 +28,22 @@ class User
   field :last_sign_in_ip,    type: String
 
   ## Confirmable
-  # field :confirmation_token,   type: String
-  # field :confirmed_at,         type: Time
-  # field :confirmation_sent_at, type: Time
-  # field :unconfirmed_email,    type: String # Only if using reconfirmable
+  field :confirmation_token,   type: String
+  field :confirmed_at,         type: Time
+  field :confirmation_sent_at, type: Time
+  field :unconfirmed_email,    type: String # Only if using reconfirmable
 
   ## Lockable
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
+
+  # Apps will be able to store particular info here
+  field :uattr, type: Hash
+
+  belongs_to :app
+  accepts_nested_attributes_for :app
+  validates :app, presence: true
 
   has_many :identities
 
@@ -58,8 +68,6 @@ class User
       # Create the user if it's a new registration
       if user.nil?
         user = User.new(
-          name: auth.extra.raw_info.name,
-          #username: auth.info.nickname || auth.uid,
           email: email ? email : "user-#{auth.uid}@#{auth.provider}.com",
           password: Devise.friendly_token[0,20]
         )
@@ -71,8 +79,22 @@ class User
     # Associate the identity with the user if needed
     if identity.user != user
       identity.user = user
+      identity.oauth_extra = auth.extra
       identity.save!
     end
     user
+  end
+
+
+
+  def self.public_attrs
+    [:id, :_slugs, :email, :uattr]
+  end
+
+  def set_app
+    self.app = App.find(self.app_id)
+  end
+  def get_app_id
+    self.app_id
   end
 end

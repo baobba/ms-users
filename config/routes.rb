@@ -2,9 +2,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       devise_for :users
-      match '/users/auth/failure', to: redirect('/'), via: [:get, :post]
+      #match '/users/auth/failure', to: redirect('/'), via: [:get, :post]
       resources :apps, except: [:new, :edit], defaults: {format: :json}
       resources :enterprises, except: [:new, :edit], defaults: {format: :json}
+      resources :users, only: [:show, :index], defaults: {format: :json}
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

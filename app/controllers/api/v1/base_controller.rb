@@ -27,7 +27,7 @@ class Api::V1::BaseController < ApplicationController
                               .per(page_params[:page_size])
 
     instance_variable_set(plural_resource_name, resources)
-    respond_with @apps
+    respond_with plural_resource_name
   end
 
   # GET /api/{plural_resource_name}/1
@@ -69,54 +69,71 @@ class Api::V1::BaseController < ApplicationController
     end
   end
 
+  protected
+
+    def restrict_access
+      api_token = ApiToken.where(token: params[:token]).exists?
+      head :unauthorized unless api_token
+    end
+    def restrict_admin
+      role = ApiToken.where(token: params[:token]).first.try(:role)
+      head :unauthorized unless role == "admin"
+    end
+    def restrict_self
+      api_token = ApiToken.where(token: params[:token]).first
+      app_id = api_token.try(:app_id)
+      head :unauthorized unless app_id != nil && ( get_resource.try(:get_app_id) == app_id ) || api_token.try(:role) == "admin"
+    end
+
   private
 
-  def get_resource
-    instance_variable_get("@#{resource_name}")
-  end
-
-  # Returns the allowed parameters for searching
-  # Override this method in each API controller
-  # to permit additional parameters to search on
-  # @return [Hash]
-  def query_params
-    {}
-  end
-
-  # Returns the allowed parameters for pagination
-  # @return [Hash]
-  def page_params
-    params.permit(:page, :page_size)
-  end
-
-  # The resource class based on the controller
-  # @return [Class]
-  def resource_class
-    @resource_class ||= resource_name.classify.constantize
-  end
-
-  # The singular name for the resource class based on the controller
-  # @return [String]
-  def resource_name
-    @resource_name ||= self.controller_name.singularize
-  end
-
-  # Only allow a trusted parameter "white list" through.
-  # If a single resource is loaded for #create or #update,
-  # then the controller for the resource must implement
-  # the method "#{resource_name}_params" to limit permitted
-  # parameters for the individual model.
-  def resource_params
-    @resource_params ||= self.send("#{resource_name}_params")
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_resource(resource = nil)
-    begin
-      resource ||= resource_class.find(params[:id])
-      instance_variable_set("@#{resource_name}", resource)
-    rescue
-      not_found
+    def get_resource
+      instance_variable_get("@#{resource_name}")
     end
-  end
+
+    # Returns the allowed parameters for searching
+    # Override this method in each API controller
+    # to permit additional parameters to search on
+    # @return [Hash]
+    def query_params
+      {}
+    end
+
+    # Returns the allowed parameters for pagination
+    # @return [Hash]
+    def page_params
+      params.permit(:page, :page_size)
+    end
+
+    # The resource class based on the controller
+    # @return [Class]
+    def resource_class
+      @resource_class ||= resource_name.classify.constantize
+    end
+
+    # The singular name for the resource class based on the controller
+    # @return [String]
+    def resource_name
+      @resource_name ||= self.controller_name.singularize
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    # If a single resource is loaded for #create or #update,
+    # then the controller for the resource must implement
+    # the method "#{resource_name}_params" to limit permitted
+    # parameters for the individual model.
+    def resource_params
+      @resource_params ||= self.send("#{resource_name}_params")
+    end
+
+    # Use callbacks to share common setup or constraints between actions.
+    def set_resource(resource = nil)
+      begin
+        resource ||= resource_class.find(params[:id])
+        instance_variable_set("@#{resource_name}", resource)
+      rescue
+        not_found
+      end
+    end
+
 end

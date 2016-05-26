@@ -12,6 +12,7 @@ gem 'uglifier'
 gem 'jbuilder', '~> 2.0'
 gem 'responders', '~> 2.0'
 gem 'kaminari'
+gem 'enumerize'
 
 # Use rspec for testing.
 gem 'rspec-rails'

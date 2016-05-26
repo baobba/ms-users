@@ -4,10 +4,15 @@ class Enterprise
   field :name, type: String
   field :domain, type: String
   field :home_url, type: String
+  field :facebook_id, type: String
   field :facebook_key, type: String
+  field :google_id, type: String
   field :google_key, type: String
+  field :linkedin_id, type: String
   field :linkedin_key, type: String
+  field :github_id, type: String
   field :github_key, type: String
+  field :twitter_id, type: String
   field :twitter_key, type: String
 
   slug :name
