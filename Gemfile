@@ -7,6 +7,7 @@ gem 'rails', '4.2.6'
 # gem 'therubyracer', platforms: :ruby
 
 gem 'uglifier'
+gem 'jquery-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
@@ -19,11 +20,16 @@ gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'bson_ext'
 gem 'mongoid-slug'
 
+# Use 'mailgun_rails' to send emails through Mailgun"
+gem 'mailgun_rails'
+
 gem 'devise'
 gem 'omniauth'
+gem 'omniauth-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
+gem 'omniauth-linkedin-oauth2'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

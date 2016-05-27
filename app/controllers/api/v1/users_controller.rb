@@ -8,6 +8,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 		app = App.find(session[:app_id])
 		id = app.enterprise[params[:provider] + "_id"]
 		token = app.enterprise[params[:provider] + "_key"]
+
 		env['omniauth.strategy'].options[:client_id] = id
 		env['omniauth.strategy'].options[:client_secret] = token
 		render nothing: true, status: 404

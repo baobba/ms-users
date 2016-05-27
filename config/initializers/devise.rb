@@ -12,10 +12,10 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'userms@sandboxd34cec6c24c1440e88d081cd8120a105.mailgun.org'
 
   # Configure the class responsible to send e-mails.
-  # config.mailer = 'Devise::Mailer'
+  config.mailer = 'MailgunDeviseMailer'
 
   # Configure the parent class responsible to send e-mails.
   # config.parent_mailer = 'ActionMailer::Base'
@@ -244,7 +244,9 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   # config.omniauth :facebook, '483285011868719', 'd3271f9c516a3f7a98f0eb88038105f8', callback_url: "http://localhost:3000/api/v1/users/auth/facebook/callback"
   config.omniauth :facebook, setup: true
-
+  config.omniauth :google_oauth2, setup: true
+  config.omniauth :linkedin, setup: true
+  config.omniauth :twitter, setup: true
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

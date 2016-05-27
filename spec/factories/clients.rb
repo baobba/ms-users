@@ -3,8 +3,10 @@ FactoryGirl.define do
 		sequence(:email){|n| "email#{n}#{rand(10000).to_s}@email.com"}
 		password "12345678"
 		password_confirmation "12345678"
+		registration_token
 		after(:create) do |client|
 			client.confirm!
+			client.registration_token.status = "used"
 		end
   end
 

@@ -6,8 +6,8 @@ class Enterprise
   field :home_url, type: String
   field :facebook_id, type: String
   field :facebook_key, type: String
-  field :google_id, type: String
-  field :google_key, type: String
+  field :google_oauth2_id, type: String
+  field :google_oauth2_key, type: String
   field :linkedin_id, type: String
   field :linkedin_key, type: String
   field :github_id, type: String
