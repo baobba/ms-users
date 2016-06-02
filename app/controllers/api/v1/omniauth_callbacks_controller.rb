@@ -4,7 +4,7 @@ class Api::V1::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       def #{provider}
         @user = User.find_for_oauth(env["omniauth.auth"], env["omniauth.params"], current_api_v1_user)
         if @user.persisted?
-          redirect_to @user.app.callback
+          redirect_to '/api/v1/users/' + @user.slug + "?token=" + @user.app.api_token.token
         else
           session["devise.#{provider}_data"] = env["omniauth.auth"]
           redirect_to '/'
@@ -16,11 +16,7 @@ class Api::V1::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   [:facebook, :google_oauth2, :linkedin, :twitter].each do |provider|
     provides_callback_for provider
   end
-
-  def after_sign_in_path_for(resource)
-
-    return '/api/v1/users/' + @user.slug + "?token=" + @user.app.api_token.token
-  end
+  
   def auth_hash
     request.env['omniauth.auth']
   end
