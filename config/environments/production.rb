@@ -1,5 +1,7 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.action_mailer.default_url_options = { :host => 'userms.herokuapp.com' }
+  config.action_mailer.perform_deliveries = true
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -77,6 +79,6 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = {
     api_key: 'key-94412322758118aac388b791519eeaa0',
-    domain: 'sandboxd34cec6c24c1440e88d081cd8120a105'
+    domain: 'sandboxd34cec6c24c1440e88d081cd8120a105.mailgun.org'
   }
 end

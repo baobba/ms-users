@@ -4,7 +4,6 @@ class Api::V1::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       def #{provider}
         @user = User.find_for_oauth(env["omniauth.auth"], env["omniauth.params"], current_api_v1_user)
         if @user.persisted?
-          params = {slug: @user.slug}
           redirect_to @user.app.callback + "?id=" + @user.id
         else
           session["devise.#{provider}_data"] = env["omniauth.auth"]

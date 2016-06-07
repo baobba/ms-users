@@ -12,7 +12,4 @@ class Identity
   def self.find_for_oauth(auth)
   	find_or_create_by(uid: auth.uid, provider: auth.provider)
   end
-  def self.public_attrs
-  	[:provider, :uid, :oauth_hash]
-  end
 end

@@ -26,7 +26,7 @@ class Enterprise
 
   # will be included when listing enterprises or showing an specific enterprise.
   def self.public_attrs
-    [:id, :name, :domain, :home_url, :_slugs]
+    [:id, :name, :domain, :home_url, :_slugs, :facebook_id, :facebook_key, :google_oauth2_id, :google_oauth2_key, :linkedin_id, :linkedin_key, :github_id, :github_key, :twitter_id, :twitter_key]
   end
   def get_client_id
     client_id
