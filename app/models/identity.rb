@@ -2,7 +2,7 @@ class Identity
   include Mongoid::Document
   field :provider, type: String
   field :uid, type: String
-  field :oauth_extra, type: Hash
+  field :oauth_hash, type: String
 
   belongs_to :user
 
@@ -13,6 +13,6 @@ class Identity
   	find_or_create_by(uid: auth.uid, provider: auth.provider)
   end
   def self.public_attrs
-  	[:provider, :uid, :oauth_extra]
+  	[:provider, :uid, :oauth_hash]
   end
 end

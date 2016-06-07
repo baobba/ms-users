@@ -45,6 +45,7 @@ group :development, :test do
   gem 'byebug'
 	# Use rspec for testing.
 	gem 'rspec-rails'
+	# Use factory girl for factories.
 	gem 'factory_girl_rails'
 end
 
@@ -56,3 +57,7 @@ group :development do
   gem 'spring'
 end
 
+group :test do
+	# Use shoulda-matchers for validation specs
+	gem 'shoulda-matchers'
+end

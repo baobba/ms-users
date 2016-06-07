@@ -9,12 +9,17 @@ class Api::V1::UsersController < Api::V1::BaseController
 		id = app.enterprise[params[:provider] + "_id"]
 		token = app.enterprise[params[:provider] + "_key"]
 
-		env['omniauth.strategy'].options[:client_id] = id
-		env['omniauth.strategy'].options[:client_secret] = token
+		if params[:provider] == "twitter"
+			env['omniauth.strategy'].options[:consumer_key] = id
+			env['omniauth.strategy'].options[:consumer_secret] = token
+		else
+			env['omniauth.strategy'].options[:client_id] = id
+			env['omniauth.strategy'].options[:client_secret] = token
+		end
 		render nothing: true, status: 404
 	end
 
 	def user_params
-		params.require(:user).permit(attrs: {})
+		params.require(:user).permit!
 	end
 end

@@ -1,6 +1,6 @@
 class User
   include Mongoid::Document
-  include Mongoid::Slug
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -10,7 +10,6 @@ class User
 
   ## Database authenticatable
   field :email,              type: String, default: ""
-  slug :email
   field :encrypted_password, type: String, default: ""
 
   ## Recoverable
@@ -49,13 +48,6 @@ class User
   has_many :identities
 
   def self.find_for_oauth(auth, params, signed_in_resource = nil)
-    puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    puts auth
-    puts params
-    puts signed_in_resource
-    puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    puts "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     # Get the identity and user if they exist
     identity = Identity.find_for_oauth(auth)
 
@@ -88,7 +80,7 @@ class User
     # Associate the identity with the user if needed
     if identity.user != user
       identity.user = user
-      identity.oauth_extra = auth.extra
+      identity.oauth_hash = auth.to_json
       identity.save!
     end
     user
@@ -97,7 +89,7 @@ class User
 
 
   def self.public_attrs
-    [:id, :_slugs, :email, :uattr]
+    [:id, :email, :uattr]
   end
 
   def set_app
