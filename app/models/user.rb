@@ -39,11 +39,17 @@ class User
 
   # Apps will be able to store particular info here
   field :uattr, type: Hash
+  field :uuid, type: String
+  index({uuid: 1}, {unique: true})
+  validates :uuid, presence: true
+
 
   belongs_to :app
   accepts_nested_attributes_for :app
   validates :app, presence: true
-  before_validation :set_app
+
+
+  before_validation :set_app, :set_uuid
 
   has_many :identities
 
@@ -87,11 +93,13 @@ class User
   end
 
 
-
   def self.public_attrs
     [:id, :email, :uattr]
   end
 
+  def set_uuid
+    self.uuid = SecureRandom.uuid if self.uuid == nil
+  end
   def set_app
     self.app = App.find(self.app_id)
   end

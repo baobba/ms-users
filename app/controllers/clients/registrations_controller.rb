@@ -16,6 +16,8 @@ class Clients::RegistrationsController < Devise::RegistrationsController
           resource.registration_token = rt
           if resource.save
             rt.update!(status: "used")
+            redirect_to root_path
+            return
           end
         end
         return
@@ -26,9 +28,6 @@ class Clients::RegistrationsController < Devise::RegistrationsController
     render json: {error: "Invalid token"}, status: :unauthorized
   end
   def after_sign_in_path_for(client)
-    return '/'
-  end
-  def after_sign_up_path_for(client)
     return '/'
   end
   # GET /resource/edit

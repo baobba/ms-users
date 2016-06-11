@@ -2,7 +2,7 @@ FactoryGirl.define do
 	factory :app do
 		sequence(:name){|n| "name#{n}#{rand(10000).to_s}"}
 		sequence(:domain){|n| "name#{n}#{rand(10000).to_s}.com"}
-		callback "/callback"
+		sequence(:callback){|n| "http://localhost:3000/callback#{n}"} 
 		enterprise
 	end
 

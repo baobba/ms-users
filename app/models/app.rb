@@ -1,6 +1,7 @@
 class App
   include Mongoid::Document
   include Mongoid::Slug
+  
   field :name, type: String
   field :domain, type: String
   field :callback, type: String
@@ -8,7 +9,7 @@ class App
   slug :name
 
   belongs_to :enterprise
-  validates :enterprise_id, presence: true
+  validates :enterprise, presence: true
   accepts_nested_attributes_for :enterprise
 
   has_one :api_token
