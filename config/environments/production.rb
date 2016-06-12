@@ -79,6 +79,6 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = {
     api_key: 'key-94412322758118aac388b791519eeaa0',
-    domain: 'sandboxd34cec6c24c1440e88d081cd8120a105.mailgun.org'
+    domain: 'userms.herokuapp.com'
   }
 end

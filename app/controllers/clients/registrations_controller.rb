@@ -14,7 +14,7 @@ class Clients::RegistrationsController < Devise::RegistrationsController
       if rt.expires_at >= Time.now
         super do
           resource.registration_token = rt
-          if resource.save
+          if resource.save!
             rt.update!(status: "used")
             redirect_to root_path
             return
