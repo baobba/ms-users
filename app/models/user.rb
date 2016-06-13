@@ -45,7 +45,6 @@ class User
 
 
   belongs_to :app
-  accepts_nested_attributes_for :app
   validates :app, presence: true
 
 

@@ -7,7 +7,7 @@ FactoryGirl.define do
   factory :identity do
   	oauth_hash			oah.to_json
   	provider				:facebook
-  	uid							oah.uid
+  	uid							oah.try(:uid)
   	user
   end
 end

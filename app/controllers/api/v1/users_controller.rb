@@ -20,6 +20,8 @@ class Api::V1::UsersController < Api::V1::BaseController
 	end
 
 	def user_params
-		params.require(:user).permit!
+		p = params.require(:user).permit(:email, :password, :password_confirmation, :uattr)
+		p[:app_id] = ApiToken.where(token: params[:token]).first.try(:app_id)
+		return p
 	end
 end
