@@ -16,8 +16,10 @@ RSpec.describe Api::V1::AppsController, type: :controller do
 
   describe "POST #create" do
     it "returns http created for logged client" do
-      client_sign_in
       enterprise = FactoryGirl.create(:enterprise)
+
+      client_sign_in enterprise.client
+
       app_attrs = FactoryGirl.attributes_for(:app)
       app_attrs[:enterprise_id] = enterprise.slug
 

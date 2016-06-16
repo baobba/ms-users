@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::EnterprisesController, type: :controller do
 
+  after(:all) do
+    client_sign_out
+  end
+
   describe "GET #index" do
     it "returns http success as client admin" do
       client_admin_sign_in

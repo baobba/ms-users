@@ -97,7 +97,7 @@ class User
   #  self.uuid = SecureRandom.uuid if self.uuid == nil
   #end
   def set_app
-    self.app = App.find(self.app_id)
+    self.app = App.find(self.app_id) if self.app_id.present?
   end
   def get_app_id
     self.app_id
