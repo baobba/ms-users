@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       #match '/users/auth/failure', to: redirect('/'), via: [:get, :post]
       resources :apps, except: [:new, :edit], defaults: {format: :json}
       resources :enterprises, except: [:new, :edit], defaults: {format: :json}
-      resources :users, except: [:new, :edit], defaults: {format: :json}
+      resources :users, except: [:new, :edit], defaults: {format: :json}, param: :uuid
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

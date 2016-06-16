@@ -19,6 +19,7 @@ gem 'enumerize'
 gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'bson_ext'
 gem 'mongoid-slug'
+gem 'mongoid-uuid'
 
 # Use 'mailgun_rails' to send emails through Mailgun"
 gem 'mailgun_rails'

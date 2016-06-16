@@ -88,12 +88,12 @@ class Api::V1::BaseController < ApplicationController
     end
     def restrict_admin
       role = ApiToken.where(token: params[:token]).first.try(:role)
-      head :unauthorized unless role == "admin"
+      head :unauthorized unless role == "admin" || (current_client != nil && current_client.try(:role) == "admin")
     end
     def restrict_self
       api_token = ApiToken.where(token: params[:token]).first
       app_id = api_token.try(:app_id)
-      head :unauthorized unless app_id != nil && ( get_resource.try(:get_app_id) == app_id ) || api_token.try(:role) == "admin"
+      head :unauthorized unless (app_id != nil && get_resource.try(:get_app_id) == app_id ) || api_token.try(:role) == "admin" || restrict_logged_client_admin
     end
 
   private
@@ -110,7 +110,7 @@ class Api::V1::BaseController < ApplicationController
       {}
     end
 
-    # Returns the allowed parameters for pagination
+    # Returns the allowed parameters for paclientgination
     # @return [Hash]
     def page_params
       params.permit(:page, :page_size)
@@ -140,7 +140,11 @@ class Api::V1::BaseController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_resource(resource = nil)
       begin
-        resource ||= resource_class.find(params[:id])
+        if params[:id].present?
+          resource ||= resource_class.find(params[:id])
+        elsif params[:uuid].present?
+          resource ||= resource_class.find_by(uuid: params[:uuid])
+        end
         instance_variable_set("@#{resource_name}", resource)
       rescue
         not_found
