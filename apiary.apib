@@ -1,0 +1,816 @@
+FORMAT: 1A
+
+HOST: http://userms.heroku.com/api/v1
+
+# userms
+
+Userms is a microservice API that handles user authentication.
+
+# Group Enterprises
+
+Resources related to enterprises that will create apps.
+
+REQUIRES Client to be logged in
+
+## List / Create [/enterprises?{page,page_size}]
+    
+### List Enterprises with pagination [GET]
+
+Available only to clients with "admin" role.
+
+Parameters should be supplied, otherwise the default values will prevail.
+
++ Parameters
+    + page (int) - Page number. Default: 1.
+    + page_size (int) - Number of elements per page. Default: 25.
+    
++ Response 200 (application/json)
+
+        {  
+           "enterprises":[  
+              {  
+                 "id":{  
+                    "$oid":"574741a7735aed1605000000"
+                 },
+                 "name":"Baobbá",
+                 "domain":null,
+                 "home_url":null,
+                 "_slugs":[  
+                    "baobba"
+                 ],
+                 "facebook_id":"xxxxxxxxxxxxxxxxxxx",
+                 "facebook_key":"xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                 "google_oauth2_id":null,
+                 "google_oauth2_key":null,
+                 "linkedin_id":"xxxxxxxxxxxxxxxxxxxxxxxxxx",
+                 "linkedin_key":"xxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                 "github_id":null,
+                 "github_key":null,
+                 "twitter_id":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                 "twitter_key":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+              },
+              {  
+                 "id":{  
+                    "$oid":"57617b56735aed2792000002"
+                 },
+                 "name":"Nome da empresa 1 8631",
+                 "domain":null,
+                 "home_url":null,
+                 "_slugs":[  
+                    "nome-da-empresa-1-8631"
+                 ],
+                 "facebook_id":null,
+                 "facebook_key":null,
+                 "google_oauth2_id":null,
+                 "google_oauth2_key":null,
+                 "linkedin_id":null,
+                 "linkedin_key":null,
+                 "github_id":null,
+                 "github_key":null,
+                 "twitter_id":null,
+                 "twitter_key":null
+              }
+           ]
+        }
+        
+### Create Enterprise [POST]
+
++ Request
+
+    + Body
+    
+            {
+                "enterprise" : {
+                    "name" : "Qualquer nome ae",
+                    "twitter_id" : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "twitter_key" : "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                }
+            }
+            
++ Response 201 (application/json)
+
+        {  
+            "enterprise" : {  
+                 "id":{  
+                    "$oid":"57617b56735aed2792000003"
+                 },
+                 "name":"Qualquer nome ae",
+                 "domain":null,
+                 "home_url":null,
+                 "_slugs":[  
+                    "qualquer-nome-ae"
+                 ],
+                 "facebook_id":null,
+                 "facebook_key":null,
+                 "google_oauth2_id":null,
+                 "google_oauth2_key":null,
+                 "linkedin_id":null,
+                 "linkedin_key":null,
+                 "github_id":null,
+                 "github_key":null,
+                 "twitter_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                 "twitter_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            }
+        }
+        
+## Update / Delete [/enterprises/{slug}]
+
++ Parameter
+    + slug (string) - Slugged name of the enterprise
+
+### Update an Enterprise [PATCH]
+
++ Request
+
+    + Body
+    
+            {
+                "enterprise" : {
+                    "domain" : "http://enterprise.domain.com"
+                }
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+    
+            {  
+                "enterprise" : {  
+                     "id":{  
+                        "$oid":"57617b56735aed2792000003"
+                     },
+                     "name":"Qualquer nome ae",
+                     "domain": "http://enterprise.domain.com",
+                     "home_url":null,
+                     "_slugs":[  
+                        "qualquer-nome-ae"
+                     ],
+                     "facebook_id":null,
+                     "facebook_key":null,
+                     "google_oauth2_id":null,
+                     "google_oauth2_key":null,
+                     "linkedin_id":null,
+                     "linkedin_key":null,
+                     "github_id":null,
+                     "github_key":null,
+                     "twitter_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                     "twitter_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                }
+            }
+
+
+### Update an Enterprise [PUT]
+
++ Request
+
+    + Body
+    
+            {
+                "enterprise" : {
+                    "domain" : "http://enterprise.domain.com"
+                }
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+    
+            {  
+                "enterprise" : {  
+                     "id":{  
+                        "$oid":"57617b56735aed2792000003"
+                     },
+                     "name":"Qualquer nome ae",
+                     "domain": "http://enterprise.domain.com",
+                     "home_url":null,
+                     "_slugs":[  
+                        "qualquer-nome-ae"
+                     ],
+                     "facebook_id":null,
+                     "facebook_key":null,
+                     "google_oauth2_id":null,
+                     "google_oauth2_key":null,
+                     "linkedin_id":null,
+                     "linkedin_key":null,
+                     "github_id":null,
+                     "github_key":null,
+                     "twitter_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                     "twitter_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                }
+            }
+            
+### Delete an Enterprise [DELETE]
+
++ Response 204
+
+# Group Apps
+
+Resources related to apps that will use this microservice.
+
+## List / Create [/apps?{page,page_size,token}]
+
+Only available to clients or apps with "admin" role.
+    
+### List Apps with pagination [GET]
+
+Parameters should be supplied, otherwise the default values will prevail.
+
++ Parameters
+    + page (int) - Page number. Default: 1.
+    + page_size (int) - Number of elements per page. Default: 25.
+    + token (token, optional) - App token
+    
++ Response 200 (application/json)
+
+        {  
+           "apps":[  
+              {  
+                 "name":"quintal 1",
+                 "domain":"quintal.dev",
+                 "api_token":{  
+                    "_id":{  
+                       "$oid":"5756fb0810773f0003000003"
+                    },
+                    "app_id":{  
+                       "$oid":"5756fb0810773f0003000002"
+                    },
+                    "role":"client",
+                    "token":"494de4b3fa61b514f140205fe2c7f442"
+                 },
+                 "callback":"/callback",
+                 "enterprise":{  
+                    "id":{  
+                       "$oid":"5748df17dcba0f2d9d0e2909"
+                    },
+                    "name":"Baobbá",
+                    "slug":"baobba"
+                 }
+              },
+              {  
+                 "name":"quintal2",
+                 "domain":"quintal2.dev",
+                 "api_token":{  
+                    "_id":{  
+                       "$oid":"57616a7b33eb010003000003"
+                    },
+                    "app_id":{  
+                       "$oid":"57616a7a33eb010003000002"
+                    },
+                    "role":"client",
+                    "token":"262da7bf9c659e01fbb1b9f0c3ebb0af"
+                 },
+                 "callback":"http://quintal2.dev/callback",
+                 "enterprise":{  
+                    "id":{  
+                       "$oid":"575f69f90ea2560003000002"
+                    },
+                    "name":"Qualquer nome ae",
+                    "slug":"qualquer-nome-ae"
+                 }
+              }
+           ]
+        }
+        
+### Create App [POST]
+
+Requires the Client to be logged.
+
++ Request
+
+    + Body
+    
+            {
+                "app" : {
+                    "name" : "quintal2",
+                    "domain" : "quintal2.dev",
+                    "callback" : "http://quintal2.dev/callback",
+                    "enterprise_id" : "slugged-name-of-the-enterprise"
+                }
+            }
+            
++ Response 201 (application/json)
+
+        {  
+           "app":{  
+              "name":"quintal2",
+              "domain":"quintal2.dev",
+              "api_token":{  
+                 "_id":{  
+                    "$oid":"57616a7b33eb010003000003"
+                 },
+                 "app_id":{  
+                    "$oid":"57616a7a33eb010003000002"
+                 },
+                 "role":"client",
+                 "token":"262da7bf9c659e01fbb1b9f0c3ebb0af"
+              },
+              "callback":"http://quintal2.dev/callback",
+              "enterprise":{  
+                 "id":{  
+                    "$oid":"575f69f90ea2560003000002"
+                 },
+                 "name":"Qualquer nome ae",
+                 "slug":"qualquer-nome-ae"
+              }
+           }
+        }
+        
+## Update / Delete [/apps/{slug}{?token}]
+
++ Parameter
+    + slug (string) - Slugged name of the app
+    + token (token) - App token
+
+### Update an App [PATCH]
+
++ Request
+
+    + Body
+    
+            {
+                "app" : {
+                    "callback" : "http://quintal2.dev/new_callback"
+                }
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+    
+            {  
+               "app":{  
+                  "name":"quintal2",
+                  "domain":"quintal2.dev",
+                  "api_token":{  
+                     "_id":{  
+                        "$oid":"57616a7b33eb010003000003"
+                     },
+                     "app_id":{  
+                        "$oid":"57616a7a33eb010003000002"
+                     },
+                     "role":"client",
+                     "token":"262da7bf9c659e01fbb1b9f0c3ebb0af"
+                  },
+                  "callback":"http://quintal2.dev/new_callback",
+                  "enterprise":{  
+                     "id":{  
+                        "$oid":"575f69f90ea2560003000002"
+                     },
+                     "name":"Qualquer nome ae",
+                     "slug":"qualquer-nome-ae"
+                  }
+               }
+            }
+
+
+### Update an App [PUT]
+
++ Request
+
+    + Body
+    
+            {
+                "app" : {
+                    "callback" : "http://quintal2.dev/new_callback"
+                }
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+    
+            {  
+               "app":{  
+                  "name":"quintal2",
+                  "domain":"quintal2.dev",
+                  "api_token":{  
+                     "_id":{  
+                        "$oid":"57616a7b33eb010003000003"
+                     },
+                     "app_id":{  
+                        "$oid":"57616a7a33eb010003000002"
+                     },
+                     "role":"client",
+                     "token":"262da7bf9c659e01fbb1b9f0c3ebb0af"
+                  },
+                  "callback":"http://quintal2.dev/new_callback",
+                  "enterprise":{  
+                     "id":{  
+                        "$oid":"575f69f90ea2560003000002"
+                     },
+                     "name":"Qualquer nome ae",
+                     "slug":"qualquer-nome-ae"
+                  }
+               }
+            }
+            
+### Delete an App [DELETE]
+
++ Response 204
+            
+
+# Group Users
+
+Resources related to users in the API.
+
+It is important to point out that User has devise-like attributes, like "email", "password", "password_confirmation".
+
+Also, it holds Social Networks information under "identities" attribute.
+
+Lastly, you can store any attributes you wish as JSON under "uattr".
+
+## List/Create Users [/users{?token,qty,page}]
+
+### List Users with Pagination [GET]
+
++ Parameters
+    + token (token) - App token
+    + qty (optional, int) - Max quantity of results. Default: 100.
+    + page (optional, int) - Page number. Default: 1.
+
++ Response 200 (application/json)
+
+        {  
+           "users": [
+              {  
+                  "id":{  
+                     "$oid":"5756ebd9735aed0f4f000000"
+                  },
+                  "email":"user-38921626@twitter.com",
+                  "uattr":{  
+                     "my_attr1":"my value 1",
+                     "my_obj1":{  
+                        "my_obj1_attr1":1,
+                        "my_obj1_attr2":10.1
+                     },
+                     "my_array1":[  
+                        1,
+                        2,
+                        3
+                     ],
+                     "my_obj_array1":[  
+                        {  
+                           "attr1":"value1",
+                           "attr2":[  
+                              "a",
+                              "b",
+                              "c"
+                           ]
+                        },
+                        {  
+                           "attr3":"value3",
+                           "attr4":{  
+                              "attr41":1
+                           }
+                        }
+                     ]
+                  },
+                  "identities":[  
+                     {  
+                        "provider":"twitter",
+                        "uid":"38921626",
+                        "oauth_hash":{
+                            "some_key" : "some_value"
+                        }
+                     }
+                  ]
+               }
+            ]
+        }
+
+### Creates user [POST]
+
+Creates a user without using OAuth.
+
++ Parameters
+    + token (token) - App token
+
+
++ Request (application/json)
+
+        {
+            "user" : {
+                "email" : "joaquina@mail.com",
+                "password" : "123456",
+                "password_confirmation" : "123456",
+                "uattr" : {
+                    "any_key_i_wish" : ["any_value_i_with", 111]
+                }
+            }
+        }
+        
++ Response 200 (application/json)
+
+    
+    + Headers
+    
+            Location: /users/uuid-hash{?token}
+    
+    + Body
+    
+            {  
+               "user":{  
+                  "id":{  
+                     "$oid":"5761fd71735aed28c1000001"
+                  },
+                  "email":"joaquina@mail.com",
+                  "uattr":{  
+                     "any_key_i_wish":[  
+                        "any_value_i_with",
+                        111
+                     ]
+                  },
+                  "uuid":"96a3da10-158d-0134-5238-3888e3812d7c",
+                  "identities":[  
+            
+                  ]
+               }
+            }
+            
+## Fetch/Update User [/users/{uuid}{?token}]
+
++ Parameters
+    + token (token) - App token
+
+
+### Fetch User [GET]
+
+Fetches user based on it's uuid
+
++ Response 200 (application/json)
+
+        {  
+           "user":{  
+              "id":{  
+                 "$oid":"5756ebd9735aed0f4f000000"
+              },
+              "email":"user-38921626@twitter.com",
+              "uattr":{  
+                 "my_attr1":"my value 1",
+                 "my_obj1":{  
+                    "my_obj1_attr1":1,
+                    "my_obj1_attr2":10.1
+                 },
+                 "my_array1":[  
+                    1,
+                    2,
+                    3
+                 ],
+                 "my_obj_array1":[  
+                    {  
+                       "attr1":"value1",
+                       "attr2":[  
+                          "a",
+                          "b",
+                          "c"
+                       ]
+                    },
+                    {  
+                       "attr3":"value3",
+                       "attr4":{  
+                          "attr41":1
+                       }
+                    }
+                 ]
+              },
+              "identities":[  
+                 {  
+                    "provider":"twitter",
+                    "uid":"38921626",
+                    "oauth_hash":{  
+                       "provider":"twitter",
+                       "uid":"38921626",
+                       "info":{  
+                          "nickname":"AriTolledo",
+                          "name":"Ariel Aleksandrus",
+                          "email":null,
+                          "location":"",
+                          "image":"http://pbs.twimg.com/profile_images/1535109818/Imagem_024_normal.jpg",
+                          "description":"",
+                          "urls":{  
+                             "Website":null,
+                             "Twitter":"https://twitter.com/AriTolledo"
+                          }
+                       },
+                       "credentials":{  
+                          "token":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                          "secret":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                       },
+                       "extra":{  
+                            "params":{  
+                                "oauth_token":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                "oauth_token_secret":"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                                "user_id":"38921626",
+                                "screen_name":"AriTolledo",
+                                "x_auth_expires":"0"
+                            },
+                          "raw_info":{  
+                             "id":38921626,
+                             "id_str":"38921626",
+                             "name":"Ariel Aleksandrus",
+                             "screen_name":"AriTolledo",
+                             "location":"",
+                             "description":"",
+                             "url":null,
+                             "entities":{  
+                                "description":{  
+                                   "urls":[  
+        
+                                   ]
+                                }
+                             },
+                             "protected":false,
+                             "followers_count":11,
+                             "friends_count":2,
+                             "listed_count":1,
+                             "created_at":"Sat May 09 20:28:28 +0000 2009",
+                             "favourites_count":0,
+                             "utc_offset":-10800,
+                             "time_zone":"Santiago",
+                             "geo_enabled":false,
+                             "verified":false,
+                             "statuses_count":6,
+                             "lang":"en",
+                             "contributors_enabled":false,
+                             "is_translator":false,
+                             "is_translation_enabled":false,
+                             "profile_background_color":"C0DEED",
+                             "profile_background_image_url":"http://abs.twimg.com/images/themes/theme1/bg.png",
+                             "profile_background_image_url_https":"https://abs.twimg.com/images/themes/theme1/bg.png",
+                             "profile_background_tile":false,
+                             "profile_image_url":"http://pbs.twimg.com/profile_images/1535109818/Imagem_024_normal.jpg",
+                             "profile_image_url_https":"https://pbs.twimg.com/profile_images/1535109818/Imagem_024_normal.jpg",
+                             "profile_link_color":"0084B4",
+                             "profile_sidebar_border_color":"C0DEED",
+                             "profile_sidebar_fill_color":"DDEEF6",
+                             "profile_text_color":"333333",
+                             "profile_use_background_image":true,
+                             "has_extended_profile":false,
+                             "default_profile":true,
+                             "default_profile_image":false,
+                             "following":false,
+                             "follow_request_sent":false,
+                             "notifications":false
+                          }
+                       }
+                    }
+                 }
+              ]
+           }
+        }
+        
+### Update User [PATCH]
+
++ Request (application/json)
+
+        {
+            "user" : {
+                "uattr" : {
+                    "custom" : "attr"
+                }
+            }
+        }
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "user": {
+                "id": {
+                  "$oid": "5761fd71735aed28c1000001"
+                },
+                "email": "joaquina@mail.com",
+                "uattr": {
+                  "custom": "attr"
+                },
+                "uuid": "96a3da10-158d-0134-5238-3888e3812d7c",
+                "identities": []
+              }
+            }
+        
+### Update User [PUT]
+
++ Request (application/json)
+
+        {
+            "user" : {
+                "uattr" : {
+                    "custom" : "attr"
+                }
+            }
+        }
+        
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "user": {
+                "id": {
+                  "$oid": "5761fd71735aed28c1000001"
+                },
+                "email": "joaquina@mail.com",
+                "uattr": {
+                  "custom": "attr"
+                },
+                "uuid": "96a3da10-158d-0134-5238-3888e3812d7c",
+                "identities": []
+              }
+            }
+
+## OAuth integration [/users/auth/:provider]
+
+Uses OAuth to create or update a user.
+
+User should be redirected to this URL.
+
+After they've accepted the social network login, they'll be redirected to the app's callback
+
+### Fetch OAuth data [GET]
+
+
+
++ Parameter
+    + provider (string) - Content provider, like google, facebook, github, etc.
+
++ Response 201 (application/json)
+
+    + Headers
+    
+            Location: (app callback){?uuid}
+ 
+              
+## Search Users [/users/search{?token,keyN,comparisonN,valueN}]
+    
+NOT IMPLEMENTED
+    
+### Search user [GET]
+
+Searches for users based on N (1 or more) key-value comparisons.
+
++ Parameters
+    + token (token) - App token
+    + keyN (string) - the name of the database column
+    + comparisonN (string) - the type of comparison, for example: "greater", "lesser", "equal", etc.
+    + valueN - The value to be searched.
+    
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id" : 1,
+                "attrs" : {
+                    "username" : "Ariel",
+                    "created_at" : "2016-01-01T08:00:00.620Z",
+                    "updated_at" : "2016-01-01T08:00:00.620Z"
+                },
+                "oauth" : [
+                    {
+                        "provider" : "google",
+                        "info" : {
+                            "email" : "ariel@google.com",
+                            "First Name" : "Ariel",
+                            "Last Name" : "Bonome"
+                        }
+                    },
+                    {
+                        "provider" : "facebook",
+                        "info" : {
+                            "email" : "ariel@mail.com",
+                            "First Name" : "Ariel",
+                            "Last Name" : "Bonome",
+                            "birth" : "1969-12-31"
+                        }
+                    }
+                ]
+            },
+            {
+                "id" : 2,
+                "attrs" : {
+                    "username" : "Joaquina",
+                    "created_at" : "2016-01-01T08:00:00.620Z",
+                    "updated_at" : "2016-01-01T08:00:00.620Z"
+                },
+                "oauth" : [
+                    {
+                        "provider" : "google",
+                        "info" : {
+                            "email" : "joaquina@google.com",
+                            "First Name" : "Joaquina",
+                            "Last Name" : "Silva"
+                        }
+                    },
+                    {
+                        "provider" : "facebook",
+                        "info" : {
+                            "email" : "joaquina@mail.com",
+                            "First Name" : "Joaquina",
+                            "Last Name" : "Silva",
+                            "birth" : "1969-12-31"
+                        }
+                    }
+                ]
+            }
+        ]
