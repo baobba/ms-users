@@ -250,6 +250,7 @@ DEPENDENCIES
   factory_girl_rails
   jbuilder (~> 2.0)
   jquery-rails
+  jwt
   kaminari
   mailgun_rails
   mongoid!

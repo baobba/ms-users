@@ -31,4 +31,78 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
+  describe "GET #logged" do
+    it "returns http success for valid params" do
+      user = FactoryGirl.create(:user)
+      api_token = user.app.api_token.token
+
+      payload = {uuid: user.uuid}
+      jwt_token = JWT.encode payload, api_token, 'HS256'
+
+      get :logged, jwt_token: jwt_token, token: api_token
+      expect(response).to have_http_status(:success)
+    end
+    it "returns not found for invalid params" do
+      user = FactoryGirl.create(:user)
+      api_token = user.app.api_token.token
+
+      payload = {uuid: "an_incorrect_uuid"}
+      jwt_token = JWT.encode payload, api_token, 'HS256'
+
+      get :logged, jwt_token: jwt_token, token: api_token
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe "POST #authenticate" do
+    it "returns http success for valid identity uid and provider" do
+      identity = FactoryGirl.create(:identity)
+      api_token = identity.user.app.api_token.token
+
+      post :authenticate, uid: identity.uid, provider: identity.provider, token: api_token, format: :json
+      expect(response).to have_http_status(:success)
+
+      parsed_resp = JSON.parse(response.body)
+      expect(parsed_resp["uuid"]).to eq identity.user.uuid
+    end
+    it "returns http not found for invalid uid" do
+      identity = FactoryGirl.create(:identity)
+      api_token = identity.user.app.api_token.token
+
+      post :authenticate, uid: "sampleuid", provider: identity.provider, token: api_token
+      expect(response).to have_http_status(:not_found)
+    end
+    it "returns http success for valid email and password" do
+      user = FactoryGirl.create(:user)
+
+      pswd = "1234567"
+
+      user.password = pswd
+      user.password_confirmation = pswd
+      user.save!
+
+      api_token = user.app.api_token.token
+
+      post :authenticate, email: user.email, password: pswd, token: api_token, format: :json
+      expect(response).to have_http_status(:success)
+
+      parsed_resp = JSON.parse(response.body)
+      expect(parsed_resp["uuid"]).to eq user.uuid
+    end
+    it "returns http not found for invalid email and password" do
+      user = FactoryGirl.create(:user)
+
+      pswd = "1234567"
+
+      user.password = pswd
+      user.password_confirmation = pswd
+      user.save!
+
+      api_token = user.app.api_token.token
+
+      post :authenticate, email: user.email, password: pswd + "x", token: api_token
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
 end

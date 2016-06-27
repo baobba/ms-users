@@ -32,6 +32,9 @@ gem 'omniauth-twitter'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-linkedin-oauth2'
 
+# Use 'jwt' for secure json
+gem 'jwt'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

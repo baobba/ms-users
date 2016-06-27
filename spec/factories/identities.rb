@@ -2,12 +2,13 @@ require "#{Rails.root}/spec/support/omniauth_macros.rb"
 include OmniauthMacros
 
 FactoryGirl.define do
-	oah = valid_login_setup :facebook
-
   factory :identity do
-  	oauth_hash			oah.to_json
+  	sequence(:oauth_hash){|n| (valid_login_setup :facebook, rand(100000)).to_json}
   	provider				:facebook
-  	uid							oah.try(:uid)
   	user
+
+	  before(:create) do |identity|
+	  	identity.uid = JSON.parse(identity.oauth_hash)["uid"]
+	  end
   end
 end

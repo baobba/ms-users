@@ -1,17 +1,20 @@
 module OmniauthMacros
-	def valid_login_setup provider
+	def valid_login_setup provider, rnumber = nil
+		if rnumber.nil?
+			rnumber = rand(100000)
+		end
 		if Rails.env.test?
 			OmniAuth.config.test_mode = true
 			OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new({
 				provider: provider,
-				uid: rand(100000).to_s,
+				uid: rnumber.to_s,
 				info: {
 					first_name: 'FirstName',
 					last_name: 'LastName',
-					email: 'testemail' + rand(10000).to_s + '@example.com'
+					email: 'testemail' + rnumber.to_s + '@example.com'
 				},
 				credentials: {
-					token: rand(100000).to_s,
+					token: rnumber.to_s,
 					expires_at: Time.now + 1.week
 				},
 				extra: {
