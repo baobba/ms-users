@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   root to: 'home#index'
-  devise_for :clients, controllers: {registrations: "clients/registrations"}
+  devise_for :clients, controllers: {registrations: "clients/registrations", sessions: "clients/sessions"}
   resources :clients, except: [:new, :edit], defaults: {format: :json}
   scope :clients do
     get '/gen_token', to: 'clients#gen_token', defaults: {format: :json}

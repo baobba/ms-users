@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.6'
+gem 'rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -20,6 +20,9 @@ gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'bson_ext'
 gem 'mongoid-slug'
 gem 'mongoid-uuid'
+
+# Use 'rack-cors' for CORS support
+gem 'rack-cors'
 
 # Use 'mailgun_rails' to send emails through Mailgun"
 gem 'mailgun_rails'
@@ -51,6 +54,9 @@ group :development, :test do
 	gem 'rspec-rails'
 	# Use factory girl for factories.
 	gem 'factory_girl_rails'
+	# Use pry for better rails console
+	gem 'pry'
+	gem 'pry-rails'
 end
 
 group :development do

@@ -9,6 +9,7 @@ class Clients::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
+    msg = nil
     rt = RegistrationToken.where(token: params[:client][:registration_token]).first
     if rt.try(:status) == "unused"
       if rt.expires_at >= Time.now
@@ -23,9 +24,11 @@ class Clients::RegistrationsController < Devise::RegistrationsController
         return
       else
         rt.update!(status: "expired")
+        msg = "Expired token"
       end
     end
-    render json: {error: "Invalid token"}, status: :unauthorized
+    msg ||= "Invalid token"
+    render json: {error: msg}, status: :unauthorized
   end
   def after_sign_in_path_for(client)
     return '/'
