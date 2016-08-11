@@ -24,6 +24,9 @@ gem 'mongoid-uuid'
 # Use 'rack-cors' for CORS support
 gem 'rack-cors'
 
+# Use JWT for token authentication
+gem 'jwt'
+
 # Use 'mailgun_rails' to send emails through Mailgun"
 gem 'mailgun_rails'
 

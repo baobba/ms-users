@@ -1,5 +1,11 @@
 class Clients::SessionsController < Devise::SessionsController
 
+  #Require our abstraction for encoding/decoding JWT
+  require 'auth_token'
+
+  # Disable CSRF protection
+  skip_before_action :verify_authenticity_token
+
   # GET /resource/sign_in
   #def new
   #  self.resource = resource_class.new(sign_in_params)
@@ -15,7 +21,8 @@ class Clients::SessionsController < Devise::SessionsController
 
     if resource.valid_password?(params[:client][:password])
       sign_in :client, resource
-      render nothing: true
+      token = AuthToken.issue_token({ client_id: resource.id })
+      render json: { client: resource.email, token: token }
     else
       invalid_login_attempt
     end
