@@ -2,12 +2,16 @@ require 'jwt'
 
 module AuthToken
 	def AuthToken.issue_token(payload)
-		payload['exp'] = 24.hours.from_now.to_i
 		JWT.encode(payload, Rails.application.secrets.secret_key_base)
 	end
 	def AuthToken.valid?(token)
 		begin
-			JWT.decode(token, Rails.application.secrets.secret_key_base)
+			jwt_obj = JWT.decode(token, Rails.application.secrets.secret_key_base)
+			if Time.at(jwt_obj[0]["exp"]) >= Time.now
+				return jwt_obj
+			else
+				return false
+			end
 		rescue
 			false
 		end

@@ -70,30 +70,56 @@ class Api::V1::BaseController < ApplicationController
   end
 
   protected
-    def restrict_logged_client
-      head :unauthorized unless current_client
+    def restrict_logged_client cascade = false
+      if current_client
+        return true
+      else
+        head :unauthorized if !cascade
+        return false
+      end
     end
-    def restrict_logged_client_self
-      if current_client == nil || get_resource.try(:get_client_id) == nil || get_resource.try(:get_client_id) != current_client.id
-        head :unauthorized unless current_client.try(:role) == "admin"
-      end  
+    def restrict_logged_client_admin cascade = false
+      if current_client.try(:role) == "admin"
+        return true
+      else
+        head :unauthorized if !cascade
+      end
     end
-    def restrict_logged_client_admin
-      head :unauthorized unless current_client.try(:role) == "admin"
+    def restrict_logged_client_self cascade = false
+      if restrict_logged_client(true) && get_resource.try(:client_id).present? && get_resource.try(:get_client_id) == current_client.id
+        return true
+      else
+        head :unauthorized if !cascade
+        return false
+      end
     end
 
-    def restrict_access
-      api_token = ApiToken.where(token: params[:token]).exists?
-      head :unauthorized unless api_token
+    def restrict_access cascade = false
+      if ApiToken.where(token: params[:token]).exists?
+        return true
+      else
+        head :unauthorized if !cascade
+        return false
+      end
     end
-    def restrict_admin
+    def restrict_admin cascade = false
       role = ApiToken.where(token: params[:token]).first.try(:role)
-      head :unauthorized unless role == "admin" || (current_client != nil && current_client.try(:role) == "admin")
+      if role == "admin" || restrict_logged_client_admin(true)
+        return true
+      else
+        head :unauthorized if !cascade
+        return false
+      end
     end
-    def restrict_self
+    def restrict_self cascade = false
       api_token = ApiToken.where(token: params[:token]).first
       app_id = api_token.try(:app_id)
-      head :unauthorized unless (app_id != nil && get_resource.try(:get_app_id) == app_id ) || api_token.try(:role) == "admin" || restrict_logged_client_admin
+      if (app_id != nil && get_resource.try(:get_app_id) == app_id) || restrict_admin(true)
+        return true
+      else
+        head :unauthorized if !cascade
+        return false
+      end
     end
 
   private

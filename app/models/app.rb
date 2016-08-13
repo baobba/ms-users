@@ -24,7 +24,7 @@ class App
   public
     # will be included when listing apps or showing an specific app.
     def self.public_attrs
-      [:name, :domain, :api_token, :callback]
+      [:id, :name, :domain, :api_token, :callback, :slug]
     end
 
 
@@ -38,5 +38,8 @@ class App
   end
   def get_app_id
     self.id
+  end
+  def get_client_id
+    self.enterprise.get_client_id
   end
 end

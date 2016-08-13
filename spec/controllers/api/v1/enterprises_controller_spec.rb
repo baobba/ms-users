@@ -12,11 +12,6 @@ RSpec.describe Api::V1::EnterprisesController, type: :controller do
       get :index, {format: :json}
       expect(response).to have_http_status(:success)
     end
-    it "returns http unauthorized as common client" do
-    	client_sign_in
-      get :index, {token: "sampletoken", format: :json}
-      expect(response).to have_http_status(:unauthorized)
-    end
   end
 
   describe "POST #create" do

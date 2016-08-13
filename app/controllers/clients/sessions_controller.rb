@@ -21,8 +21,9 @@ class Clients::SessionsController < Devise::SessionsController
 
     if resource.valid_password?(params[:client][:password])
       sign_in :client, resource
-      token = AuthToken.issue_token({ client_id: resource.id })
-      render json: { client: resource.email, token: token }
+      expiration = 3.days.from_now.to_i
+      token = AuthToken.issue_token({ client_id: resource.id, exp: expiration})
+      render json: { client: resource.email, token: token, expires_at: expiration}
     else
       invalid_login_attempt
     end

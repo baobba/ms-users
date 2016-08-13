@@ -49,7 +49,7 @@ RSpec.describe Api::V1::AppsController, type: :controller do
   describe "GET #destroy" do
     it "returns http no_content" do
       app = FactoryGirl.create(:app)
-      get :destroy, id: app.slug
+      get :destroy, id: app.slug, token: app.api_token.token
       expect(response).to have_http_status(:no_content)
     end
   end

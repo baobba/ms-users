@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   # protect_from_forgery with: :exception
 
   def verify_jwt_token
+  	return true if current_client
+  	
   	if request.headers['Authorization'].nil? ||
   		!AuthToken.valid?(request.headers['Authorization'].split(' ').last)
   		head :unauthorized

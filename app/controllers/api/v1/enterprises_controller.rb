@@ -1,5 +1,5 @@
 class Api::V1::EnterprisesController < Api::V1::BaseController
-	before_action :verify_jwt_token, only: [:create, :index]
+	before_action :verify_jwt_token
 	#before_action :restrict_logged_client, only: [:create, :index]
 	before_action :restrict_logged_client_self, only: [:update, :delete]
 	#before_action :restrict_logged_client_admin, only: [:index]
