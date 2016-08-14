@@ -17,7 +17,7 @@ class Clients::RegistrationsController < Devise::RegistrationsController
           resource.registration_token = rt
           if resource.save!
             rt.update!(status: "used")
-            redirect_to root_path
+            render nothing: true
             return
           end
         end

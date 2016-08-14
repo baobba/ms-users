@@ -7,6 +7,7 @@ FactoryGirl.define do
 		after(:create) do |client|
 			client.skip_confirmation!
 			client.registration_token.status = "used"
+			client.save!
 		end
   end
 

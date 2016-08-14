@@ -8,6 +8,7 @@ FactoryGirl.define do
 		uattr uattr_hash
 		after(:create) do |user|
 			user.skip_confirmation!
+			user.save!
 		end
   end
 end

@@ -16,7 +16,7 @@ class ApiToken
   protected
   	def gen_token
       begin
-        self.token = SecureRandom.hex
+        self.token = SecureRandom.hex + SecureRandom.uuid
       end while self.class.where(token: token).exists?
   	end
 end

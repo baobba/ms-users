@@ -9,7 +9,7 @@ class App
   slug :name
 
   belongs_to :enterprise
-  validates :enterprise, presence: true
+  validates_presence_of :enterprise, :name, :callback
   accepts_nested_attributes_for :enterprise
 
   has_one :api_token

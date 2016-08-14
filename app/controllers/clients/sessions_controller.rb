@@ -1,4 +1,5 @@
 class Clients::SessionsController < Devise::SessionsController
+  respond_to :json
 
   #Require our abstraction for encoding/decoding JWT
   require 'auth_token'

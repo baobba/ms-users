@@ -19,7 +19,7 @@ class Api::V1::EnterprisesController < Api::V1::BaseController
 	end
 
   def enterprise_params
-    p = params.require(:enterprise).permit(:name, :home_url, :facebook_id, :facebook_key, :linkedin_id, :linkedin_key, :google_oauth2_id, :google_oauth2_key, :github_id, :github_key, :twitter_id, :twitter_key)
+    p = params.require(:enterprise).permit(:name, :domain, :home_url, :facebook_id, :facebook_key, :linkedin_id, :linkedin_key, :google_oauth2_id, :google_oauth2_key, :github_id, :github_key, :twitter_id, :twitter_key)
 		p[:client_id] = current_client.id
 		return p
   end
