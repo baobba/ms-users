@@ -71,9 +71,10 @@ class Api::V1::UsersController < Api::V1::BaseController
 	def user_params
 		p = params.require(:user).permit(:email, :password, :password_confirmation)
 		p[:uattr] = params[:user][:uattr]
+		p[:app_id] = ApiToken.where(token: params[:token]).first.app.id.to_s if params[:token].present?
 		return p
 	end
 	def query_params
-		p = params.require(:query).permit(:app_id)
+		params.require(:query).permit(:email) if params[:query].present?
 	end
 end

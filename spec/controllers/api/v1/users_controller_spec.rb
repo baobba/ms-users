@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
+  render_views
 
   describe "GET #index" do
     it "returns http success with admin token" do
@@ -11,6 +12,14 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     it "returns http unauthorized without admin token" do
       get :index, {token: "sampletoken", format: :json}
       expect(response).to have_http_status(:unauthorized)
+    end
+
+    it "returns user when queried by it's email" do
+      user = FactoryGirl.create(:user)
+      get :index, {token: user.app.api_token.token, format: :json, query: {email: user.email}}
+      expect(response).to have_http_status(:success)
+      parsed_resp = JSON.parse(response.body)
+      expect(parsed_resp["users"].length).to eq 1 
     end
   end
 
