@@ -9,7 +9,7 @@ development:
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - localhost:27017
+        - <%= ENV['MONGO_CONTAINER_NAME'] || "localhost" %>:27017
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
@@ -32,7 +32,7 @@ development:
         #   - 'dbOwner'
 
         # Change the default authentication mechanism. Valid options are: :scram,
-        # :mongodb_cr, :mongodb_x509, and :plain. (default on 3.0 is :scram, default
+        # :<%= ENV['MONGO_CONTAINER_NAME'] || "localhost" %>_cr, :<%= ENV['MONGO_CONTAINER_NAME'] || "localhost" %>_x509, and :plain. (default on 3.0 is :scram, default
         # on 2.4 and 2.6 is :plain)
         # auth_mech: :scram
 
@@ -128,7 +128,7 @@ test:
     default:
       database: userms_test
       hosts:
-        - localhost:27017
+        - <%= ENV['MONGO_CONTAINER_NAME'] || "localhost" %>:27017
       options:
         read:
           mode: primary
@@ -137,6 +137,10 @@ test:
 production:
   clients:
     default:
-      uri: "mongodb://heroku_rqbn74mq:gsprhlqvdk6eoschvdkfvblkr2@ds011893.mlab.com:11893/heroku_rqbn74mq"
-      options:
-        consistency: :strong
+      # Defines the name of the default database that Mongoid can connect to.
+      # (required).
+      database: userms_production
+      # Provides the hosts the default client can connect to. Must be an array
+      # of host:port pairs. (required)
+      hosts:
+        - <%= ENV['MONGO_CONTAINER_NAME'] || "localhost" %>:27017

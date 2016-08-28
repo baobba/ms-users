@@ -3,7 +3,7 @@ module OmniauthMacros
 		if rnumber.nil?
 			rnumber = rand(100000)
 		end
-		if Rails.env.test?
+		if Rails.env.test? || Rails.env.development?
 			OmniAuth.config.test_mode = true
 			OmniAuth.config.mock_auth[provider] = OmniAuth::AuthHash.new({
 				provider: provider,
@@ -24,6 +24,8 @@ module OmniauthMacros
 					}
 				}
 			})
+		else
+			throw "Macro not available in '" + ENV['RAILS_ENV'] + "' environment. Should be 'test' or 'development'" 
 		end
 	end
 end

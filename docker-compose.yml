@@ -1,0 +1,11 @@
+mongodb:
+  image: mongo:latest
+
+userms:
+  build: .
+  ports:
+    - '3000:3000'
+  links:
+    - mongodb
+  env_file:
+    - .userms.env

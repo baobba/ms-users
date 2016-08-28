@@ -1,3 +1,5 @@
+Mongoid.load!(Rails.root.to_s + "/config/mongoid.yml")
+
 module BSON
   class ObjectId
     def to_json(*args)

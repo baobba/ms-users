@@ -12,7 +12,7 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 gem 'responders', '~> 2.0'
-gem 'kaminari'
+gem 'kaminari-mongoid'
 gem 'enumerize'
 
 # Use 'mongoid' and 'bson_ext' for Mongodb.

@@ -5,14 +5,11 @@ FROM ruby:latest
 
 MAINTAINER Ariel Aleksandrus
 
-ENV RAILS_ENV=development
-ENV PORT=3000
 COPY . /userms
 WORKDIR /userms
 
 RUN apt-get update -qq && apt-get install -y build-essential
 
-RUN apt-get install -y mongodb
 RUN apt-get install -y nodejs
 RUN apt-get install -y git
 
@@ -20,6 +17,6 @@ RUN gem install rails --no-ri --no-rdoc
 RUN bundle install
 
 
-EXPOSE $PORT
+EXPOSE 3000
 
-CMD service mongodb start; rails s -e $RAILS_ENV -b 0.0.0.0
+CMD rails s -e $RAILS_MODE -p 3000 -b 0.0.0.0
