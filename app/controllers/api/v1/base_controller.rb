@@ -95,7 +95,7 @@ class Api::V1::BaseController < ApplicationController
     end
 
     def restrict_access cascade = false
-      if ApiToken.where(token: params[:token]).exists?
+      if ApiToken.where(token: get_token()).exists?
         return true
       else
         head :unauthorized if !cascade
@@ -103,7 +103,7 @@ class Api::V1::BaseController < ApplicationController
       end
     end
     def restrict_admin cascade = false
-      role = ApiToken.where(token: params[:token]).first.try(:role)
+      role = ApiToken.where(token: get_token()).first.try(:role)
       if role == "admin" || restrict_logged_client_admin(true)
         return true
       else
@@ -112,7 +112,7 @@ class Api::V1::BaseController < ApplicationController
       end
     end
     def restrict_self cascade = false
-      api_token = ApiToken.where(token: params[:token]).first
+      api_token = ApiToken.where(token: get_token()).first
       app_id = api_token.try(:app_id)
       if (app_id != nil && get_resource.try(:get_app_id) == app_id) || restrict_admin(true)
         return true
@@ -123,7 +123,9 @@ class Api::V1::BaseController < ApplicationController
     end
 
   private
-
+    def get_token
+      return params[:token] || request.headers["token"]
+    end
     def get_resource
       instance_variable_get("@#{resource_name}")
     end
@@ -173,7 +175,7 @@ class Api::V1::BaseController < ApplicationController
         end
         instance_variable_set("@#{resource_name}", resource)
       rescue
-        not_found
+        head :not_found
       end
     end
 

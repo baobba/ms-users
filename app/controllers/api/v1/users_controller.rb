@@ -1,5 +1,5 @@
 class Api::V1::UsersController < Api::V1::BaseController
-	before_action :restrict_access, except: [:setup]
+	prepend_before_action :restrict_access, except: [:setup]
 	before_action :restrict_self, only: [:show, :update, :delete]
 
 	# Create is not handled here
@@ -11,7 +11,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   			if params[:query].nil?
   				params[:query] = {}
   			end
-  			params[:query][:app_id] = ApiToken.where(token: params[:token]).first.app_id.to_s
+  			params[:query][:app_id] = ApiToken.where(token: get_token()).first.app_id.to_s
   		rescue
   			render json: { errors: [{token: "Invalid token"}]}, status: :unprocessable_entity
   			return
@@ -42,7 +42,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 	end
 
 	def logged
-		decoded_jwt = JWT.decode params[:jwt_token], params[:token], true, {algorithm: 'HS256'}
+		decoded_jwt = JWT.decode params[:jwt_token], get_token(), true, {algorithm: 'HS256'}
 		
 		user = User.where(uuid: decoded_jwt[0]["uuid"]).first
 		if user.nil?
@@ -71,7 +71,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 	def user_params
 		p = params.require(:user).permit(:email, :password, :password_confirmation)
 		p[:uattr] = params[:user][:uattr]
-		p[:app_id] = ApiToken.where(token: params[:token]).first.app.id.to_s if params[:token].present?
+		p[:app_id] = ApiToken.where(token: get_token()).first.app.id.to_s if get_token().present?
 		return p
 	end
 	def query_params
