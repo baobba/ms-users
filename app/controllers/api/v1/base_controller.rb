@@ -45,6 +45,12 @@ class Api::V1::BaseController < ApplicationController
     end
   end
 
+  # GET /api/{plural_resource_name}/mock
+  def mock
+    mp = params[:model].pluralize
+    path = '/api/v1/' + mp + '/mock'
+    render path
+  end
   # POST /api/{plural_resource_name}/unique
   def unique
     key = params.keys.first.to_s

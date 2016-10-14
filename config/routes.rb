@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
   namespace :api do
     namespace :v1 do
+      get '/mock/:model', to: 'base#mock', defaults: {format: :json}
       devise_for :users
       get '/users/auth/:provider/setup', to: 'users#setup'
       #match '/users/auth/failure', to: redirect('/'), via: [:get, :post]
